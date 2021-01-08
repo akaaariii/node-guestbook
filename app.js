@@ -1,12 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
-const bodyParser = require('body-parser');
-const app = express();
 
+// setups
+const app = express();
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 
 // middlewares
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
@@ -15,11 +17,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/leave-note', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'leaveNote.html'));
+  res.sendFile(path.join(__dirname, 'views', 'leave-note.html'));
 });
 
 app.post('/leave-note', (req, res) => {
-  fs.appendFileSync('./notes', req.body.note +'\n');
+  fs.appendFileSync('./notes', req.body.note+'\n');
   res.status(302);
   res.redirect('/');
 });
